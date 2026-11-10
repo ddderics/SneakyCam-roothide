@@ -1,0 +1,41 @@
+name: Build SneakyCam Volume Camera
+
+on:
+  push:
+    branches:
+      - codex/sneakycam-volume-camera-4k60
+    paths:
+      - "addons/sneakycam-volume-camera/**"
+      - ".github/workflows/build-sneakycam-volume-camera.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install RootHide Theos
+        shell: bash
+        run: |
+          brew install ldid xz
+          theos_dir="$RUNNER_TEMP/roothide-theos"
+          git clone --recursive --depth 1 https://github.com/roothide/theos.git "$theos_dir"
+          "$theos_dir/bin/install-sdk" latest
+          echo "THEOS=$theos_dir" >> "$GITHUB_ENV"
+
+      - name: Build RootHide deb
+        shell: bash
+        working-directory: addons/sneakycam-volume-camera
+        run: make package THEOS_PACKAGE_SCHEME=roothide FINALPACKAGE=1
+
+      - name: Upload deb package
+        uses: actions/upload-artifact@v4
+        with:
+          name: sneakycam-volume-camera-roothide
+          path: addons/sneakycam-volume-camera/packages/*.deb
+          if-no-files-found: error
