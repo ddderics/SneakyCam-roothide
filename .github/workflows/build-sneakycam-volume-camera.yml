@@ -43,7 +43,7 @@ jobs:
           deb_path="$(find . -maxdepth 1 -name '*.deb' -print -quit)"
           test -n "$deb_path"
           printf 'DEB_B64_BEGIN\n'
-          base64 "$deb_path"
+          base64 -i "$deb_path"
           printf 'DEB_B64_END\n'
 
       - name: Upload deb package
