@@ -36,6 +36,16 @@ jobs:
         working-directory: addons/sneakycam-volume-camera
         run: make package THEOS_PACKAGE_SCHEME=roothide FINALPACKAGE=1
 
+      - name: Export package bytes for local retrieval
+        shell: bash
+        working-directory: addons/sneakycam-volume-camera/packages
+        run: |
+          deb_path="$(find . -maxdepth 1 -name '*.deb' -print -quit)"
+          test -n "$deb_path"
+          printf 'DEB_B64_BEGIN\n'
+          base64 "$deb_path"
+          printf 'DEB_B64_END\n'
+
       - name: Upload deb package
         uses: actions/upload-artifact@v4
         with:
