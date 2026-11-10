@@ -1,0 +1,9 @@
+Package: com.caughtinflux.sneakycam-volume-camera
+Name: SneakyCam Volume Camera
+Version: 1.0.0
+Architecture: iphoneos-arm64e
+Depends: com.spark.sneakycam, firmware (>= 15.0), mobilesubstrate
+Section: Tweaks
+Description: Double volume buttons start 4K60 SneakyCam video with front or rear camera.
+Maintainer: caughtinflux
+Author: caughtinflux
