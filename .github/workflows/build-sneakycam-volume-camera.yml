@@ -25,7 +25,10 @@ jobs:
           brew install ldid xz
           theos_dir="$RUNNER_TEMP/roothide-theos"
           git clone --recursive --depth 1 https://github.com/roothide/theos.git "$theos_dir"
-          "$theos_dir/bin/install-sdk" latest
+          sdk_path="$(xcrun --sdk iphoneos --show-sdk-path)"
+          sdk_version="$(xcrun --sdk iphoneos --show-sdk-version)"
+          mkdir -p "$theos_dir/sdks"
+          ln -s "$sdk_path" "$theos_dir/sdks/iPhoneOS$sdk_version.sdk"
           echo "THEOS=$theos_dir" >> "$GITHUB_ENV"
 
       - name: Build RootHide deb
